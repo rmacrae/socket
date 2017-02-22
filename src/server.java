@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
  * Programming Assignment 4
  * February 22, 2017
  */
-public class HTTPServer {
+public class server {
     public static void main(String args[]) throws Exception {
         // The server’s IP address is the computer’s IP address
         // Create a server socket object that listens at port 6789
@@ -54,11 +54,12 @@ public class HTTPServer {
                     out.println("HTTP/1.0 404 Not Found\r\n\r\n File Not Found");
                 }
             }
-
+/*
             //close connection
             theConnection.close();
             in.close();
             out.close();
-        }
+            */
+
     }
 }
