@@ -5,7 +5,10 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
- * Created by tcb on 2/10/17.
+ * Tyler Brown, Ryan MacRae
+ * CPSC 3600
+ * Programming Assignment 4
+ * February 22, 2017
  */
 public class HTTPServer {
     public static void main(String args[]) throws Exception {
