@@ -28,9 +28,7 @@ public class server {
             if (portNumber > -1)
                 break;
         }
-
-        System.out.print("Debugger: Port number " + portNumber + " was accepted!\n");
-
+        
         //initialize the server
         ServerSocket serverSocket = null;
         try {
@@ -43,7 +41,7 @@ public class server {
 
         //wait for a client connection
         while (true) {
-            //accepting the connection and create a new socket
+            //accept the connection and create a new socket
             Socket theConnection = serverSocket.accept();
 
             // Prepare an object for reading from the input stream
