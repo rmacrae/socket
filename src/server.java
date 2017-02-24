@@ -12,16 +12,12 @@ import java.net.UnknownHostException;
  */
 public class server {
     public static void main(String args[]) throws Exception {
-        BufferedReader portReader = new BufferedReader(new InputStreamReader(System.in));
-        String portValue;
         int portNumber = -1;
 
         //ask for port number
-        while(true) {
-            System.out.print("Please specify the port number: ");
-            portValue = portReader.readLine();
+        while (true) {
             try {
-                portNumber = Integer.parseInt(portValue);
+                portNumber = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
                 System.out.println("That is an invalid port.");
             }
@@ -34,10 +30,10 @@ public class server {
         try {
             serverSocket = new ServerSocket(portNumber);
 
+        } catch (UnknownHostException e) {
+        } catch (SocketException e) {
+        } catch (IOException e) {
         }
-        catch (UnknownHostException e) {}
-        catch (SocketException e) {}
-        catch (IOException e) {}
 
 
         //wait for a client connection
@@ -59,11 +55,10 @@ public class server {
 
             //parse up the line
             String[] inFromClient = fromClient.split(" ");
-
             // Write the data on the output stream
             File f = new File(System.getProperty("user.dir") + inFromClient[1]);
-            if (inFromClient[0].equals("GET")) {
-                if (f.exists()) {
+            if (inFromClient[0].contains("GET")) {
+                if (f.isFile()) {
                     BufferedReader inFromFile = new BufferedReader(new FileReader(f));
                     String sentence;
                     out.println("HTTP/1.0 200 OK\r\n");
@@ -72,19 +67,21 @@ public class server {
 
                     }
                 } else {
-                    out.println("HTTP/1.0 404 Not Found\r\n\r\n File Not Found");
+                    out.println("HTTP/1.0 404 Not Found\r\n\r\n");
                 }
-            }
-            else if (inFromClient[0].equals("PUT")) {
+            } else if (inFromClient[0].equals("PUT")) {
                 //This is where put should go, but unsure how it is set up
             }
 
             //close connection
+
             theConnection.close();
             in.close();
             out.close();
 
-
+            //theConnection.close();
+            //in.close();
+            //out.close();
         }
 
     }

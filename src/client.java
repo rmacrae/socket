@@ -14,40 +14,25 @@ import java.net.UnknownHostException;
  */
 public class client {
     public static void main(String[] args) throws IOException {
-        System.out.println("Please specify the server name: ");
-        BufferedReader ser = new BufferedReader(new InputStreamReader(System.in));
-        String serv = ser.readLine();
-        System.out.println();
-        System.out.println("Please specify the port number: ");
-        BufferedReader soc = new BufferedReader(new InputStreamReader(System.in));
-        Integer sock = Integer.valueOf(soc.readLine());
-        System.out.println();
-        System.out.println("Please specify the 1 for GET, 2 for PUT");
-        BufferedReader choice = new BufferedReader(new InputStreamReader(System.in));
-        Integer ch = Integer.valueOf(choice.readLine());
-        String action;
-        if (ch.equals(1)){
-            action = "GET";
-        }
-        else {
-            action = "PUT";
-        }
-        System.out.println();
-        System.out.println("Please specify the file on the remote server that you want to GET/PUT: ");
-        BufferedReader fil = new BufferedReader(new InputStreamReader(System.in));
-        String file = fil.readLine();
+        String serv = args[0];
+        Integer port = Integer.parseInt(args[1]);
+        String action = args[2];
+        String file = args[3];
         Socket clientSocket = null;
         try {
-            clientSocket = new Socket(serv, sock);
+            clientSocket = new Socket(serv, port);
         } catch (UnknownHostException e) {}
         catch (SocketException e){}
         catch (IOException e){}
 
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        out.println("GET /" + file + " HTTP/1.0\n");
-        while (in.readLine() != null) {
-            System.out.println(in.readLine());
+        out.println(action + " /" + file + " HTTP/1.0\n");
+			String redl = in.readLine();        
+			while (redl != null) {
+            System.out.println(redl);
+				redl = in.readLine();
         }
+		
     }
 }
