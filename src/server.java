@@ -28,7 +28,7 @@ public class server {
             if (portNumber > -1)
                 break;
         }
-        
+
         //initialize the server
         ServerSocket serverSocket = null;
         try {
@@ -38,6 +38,7 @@ public class server {
         catch (UnknownHostException e) {}
         catch (SocketException e) {}
         catch (IOException e) {}
+
 
         //wait for a client connection
         while (true) {
@@ -60,7 +61,7 @@ public class server {
             String[] inFromClient = fromClient.split(" ");
 
             // Write the data on the output stream
-            File f = new File(inFromClient[1]);
+            File f = new File(System.getProperty("user.dir") + inFromClient[1]);
             if (inFromClient[0].equals("GET")) {
                 if (f.exists()) {
                     BufferedReader inFromFile = new BufferedReader(new FileReader(f));
