@@ -36,7 +36,7 @@ public class client {
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
         // Request to send to the server
-        out.println(action + " /" + file + " HTTP/1.0\r");
+        out.println(action + " /" + file + " HTTP/1.0\n\r");
 
         // File to open if a put request is specified.  Will read in the file and send it to the server
         if(action.equals("PUT")) {

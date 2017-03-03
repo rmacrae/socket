@@ -50,7 +50,7 @@ public class server {
                     BufferedReader inFromFile = new BufferedReader(new FileReader(f));
                     String sentence;
                     // return the response if the file is found.
-                    out.println("HTTP/1.0 200 OK\r\n");
+                    out.println("HTTP/1.0 200 OK\n\r");
                     while ((sentence = inFromFile.readLine()) != null) {
                         out.println(sentence);
 
@@ -59,7 +59,7 @@ public class server {
                     inFromFile.close();
                 } else {
                     // Send this to client if the file is not found
-                    out.println("HTTP/1.0 404 Not Found\r\n");
+                    out.println("HTTP/1.0 404 Not Found\n\r");
                 }
             }
             // If the client requests to put a file, create the file and read in the file that they send
@@ -67,6 +67,7 @@ public class server {
             else if (inFromClient[0].equals("PUT")) {
                 File p = new File(System.getProperty("user.dir") + inFromClient[1]);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(p.getAbsoluteFile(), true));
+                in.readLine();
                 String r = in.readLine();
                 while(!r.equals("\0")) {
                     System.out.println(r);
