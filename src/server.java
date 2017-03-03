@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 public class server {
     public static void main(String args[]) throws Exception {
 
-        //initialize the server
+        //initialize the server with the port specified in the command line arguments
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(Integer.parseInt(args[0]));
@@ -49,19 +49,24 @@ public class server {
                 if (f.isFile()) {
                     BufferedReader inFromFile = new BufferedReader(new FileReader(f));
                     String sentence;
+                    // return the response if the file is found.
                     out.println("HTTP/1.0 200 OK\r\n");
                     while ((sentence = inFromFile.readLine()) != null) {
                         out.println(sentence);
 
                     }
+                    // Close the bufferedreader
                     inFromFile.close();
                 } else {
-                    out.println("HTTP/1.0 404 Not Found\r\n\r\n");
+                    // Send this to client if the file is not found
+                    out.println("HTTP/1.0 404 Not Found\r\n");
                 }
-            } else if (inFromClient[0].equals("PUT")) {
+            }
+            // If the client requests to put a file, create the file and read in the file that they send
+            // and save it to the file that they specify.
+            else if (inFromClient[0].equals("PUT")) {
                 File p = new File(System.getProperty("user.dir") + inFromClient[1]);
                 BufferedWriter bw = new BufferedWriter(new FileWriter(p.getAbsoluteFile(), true));
-                in.readLine();
                 String r = in.readLine();
                 while(!r.equals("\0")) {
                     System.out.println(r);
@@ -69,10 +74,12 @@ public class server {
                     r = in.readLine();
                 }
                 bw.flush();
+                // close the bufferedwriter and send a confirmation to client that file was created
                 bw.close();
                 out.println("200 OK File Created");
             }
 
+            // close the connection and input/output
             theConnection.close();
             in.close();
             out.close();
