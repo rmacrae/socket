@@ -12,23 +12,11 @@ import java.net.UnknownHostException;
  */
 public class server {
     public static void main(String args[]) throws Exception {
-        int portNumber = -1;
-
-        //ask for port number
-        while (true) {
-            try {
-                portNumber = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                System.out.println("That is an invalid port.");
-            }
-            if (portNumber > -1)
-                break;
-        }
 
         //initialize the server
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(portNumber);
+            serverSocket = new ServerSocket(Integer.parseInt(args[0]));
 
         } catch (UnknownHostException e) {
         } catch (SocketException e) {
@@ -66,22 +54,28 @@ public class server {
                         out.println(sentence);
 
                     }
+                    inFromFile.close();
                 } else {
                     out.println("HTTP/1.0 404 Not Found\r\n\r\n");
                 }
             } else if (inFromClient[0].equals("PUT")) {
-                //This is where put should go, but unsure how it is set up
+                File p = new File(System.getProperty("user.dir") + inFromClient[1]);
+                BufferedWriter bw = new BufferedWriter(new FileWriter(p.getAbsoluteFile(), true));
+                in.readLine();
+                String r = in.readLine();
+                while(!r.equals("\0")) {
+                    System.out.println(r);
+                    bw.write(r + "\n");
+                    r = in.readLine();
+                }
+                bw.flush();
+                bw.close();
+                out.println("200 OK File Created");
             }
-
-            //close connection
 
             theConnection.close();
             in.close();
             out.close();
-
-            //theConnection.close();
-            //in.close();
-            //out.close();
         }
 
     }

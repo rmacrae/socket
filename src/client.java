@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -27,12 +24,24 @@ public class client {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        out.println(action + " /" + file + " HTTP/1.0\n");
-			String redl = in.readLine();        
-			while (redl != null) {
+        out.println(action + " /" + file + " HTTP/1.0\n\r");
+        if(action.equals("PUT")) {
+                BufferedReader inFromFile = new BufferedReader(new FileReader("test.txt"));
+                String sentence = inFromFile.readLine();
+                while (sentence != null) {
+                    System.out.println(sentence);
+                    out.println(sentence);
+                    sentence = inFromFile.readLine();
+                }
+                out.println("\0");
+                out.flush();
+            }
+
+        String redl = in.readLine();
+        while (redl != null) {
             System.out.println(redl);
-				redl = in.readLine();
+            redl = in.readLine();
         }
-		
+		clientSocket.close();
     }
 }
